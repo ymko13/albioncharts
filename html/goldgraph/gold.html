@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <script src="../static/scripts/Chart.bundle.js"></script>
+        <script src="../static/scripts/jquery.js"></script>
+    </head>
+    <body>
+        <section width="200" height="200">
+            <canvas id="chart1"></canvas>
+        </section>
+        <script>
+            $.get("../api/goldprices/", function(data, status){
+                var labels = [];
+                var values =  [];
+
+                data.forEach(function(element) {
+                    labels.push(formatDate(element.Id));
+                    values.push(element.Value / 10000);
+                }, this);
+
+                var ctx = document.getElementById("chart1");
+
+                createChart(ctx, labels, values);
+            });
+            
+            function formatDate(date)
+            {
+                var formattedDate = date.replace("Z","").split('T');
+                return formattedDate[0] + " " + formattedDate[1].replace(":00.000", "");
+            }
+
+            function createChart(ctx, labels, values)
+            {
+                var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Gold Price',
+                        data: values,
+                        backgroundColor:'rgba(166, 0, 0, 0.8)',
+                        borderColor: 'rgba(0,0,166,1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+            });
+            }
+
+
+        </script>
+    </body>
+</html>
