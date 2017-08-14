@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const postHandlers = require('./controllers/posthandlers.js');
 const getHandlers = require('./controllers/gethandlers.js');
-const htmlServant = require('./html/htmlServant.js');
+const htmlServant = require('./html/htmlservant.js');
 
 const app = express();
 Initialize(app);
