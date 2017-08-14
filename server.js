@@ -22,5 +22,5 @@ function Initialize(app)
     getHandlers.Init(app);
     htmlServant.Init(app);
     
-    app.listen(8080, listenCallback)
+    app.listen(80, listenCallback)
 }
