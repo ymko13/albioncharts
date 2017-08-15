@@ -14,13 +14,8 @@
 # [START runtime]
 runtime: custom
 env: flex
-<<<<<<< HEAD
-service: aomarkets-test
-# [END runtime]
-=======
 service: aomarkets-1
 network:
   forwarded_ports:
   - 9000
 # [END runtime]
->>>>>>> 1cb4d6e495bfb9992b74e8b4faeae5ff07b00a39
