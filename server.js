@@ -18,6 +18,8 @@ function listenCallback(err)
 
 function Initialize(app)
 {
+    app.set('trust proxy', true);
+    
     app.use(bodyParser.json());
     app.use('/static', express.static('public'))
     
