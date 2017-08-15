@@ -14,5 +14,4 @@
 # [START runtime]
 runtime: custom
 env: flex
-service: aomarkets-test
 # [END runtime]
