@@ -5,15 +5,13 @@ const getHandlers = require('./controllers/gethandlers.js');
 const htmlServant = require('./html/htmlservant.js');
 
 const app = express();
+const port = 8080;
 Initialize(app);
 
 function listenCallback(err)
 {
-    if (err) throw err;
-    const host = app.address().address;
-    const port = app.address().port;
-  
-    console.log(`Listening at http://${host}:${port}`);
+    if (err) throw err;  
+    console.log(`Listening at ${port}`);
 }
 
 function Initialize(app)
@@ -27,5 +25,5 @@ function Initialize(app)
     getHandlers.Init(app);
     htmlServant.Init(app);
     
-    app.listen(8080, listenCallback)
+    const server = app.listen(port, listenCallback)
 }
