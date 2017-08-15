@@ -14,4 +14,8 @@
 # [START runtime]
 runtime: nodejs
 env: flex
+service: aomarkets-1
+network:
+  forwarded_ports:
+    - 8080
 # [END runtime]
