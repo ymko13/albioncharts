@@ -10,7 +10,7 @@ Initialize(app);
 function listenCallback(err)
 {
     if (err) throw err;
-    console.log('Server started on port 8080');
+    console.log('Server started on port 9000');
 }
 
 function Initialize(app)
@@ -22,5 +22,5 @@ function Initialize(app)
     getHandlers.Init(app);
     htmlServant.Init(app);
     
-    app.listen(8081, listenCallback)
+    app.listen(9000, listenCallback)
 }

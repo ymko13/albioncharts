@@ -37,16 +37,17 @@
                     datasets: [{
                         label: 'Gold Price',
                         data: values,
-                        backgroundColor:'rgba(166, 0, 0, 0.8)',
-                        borderColor: 'rgba(0,0,166,1)',
-                        borderWidth: 1
+                        lineTension: 0.1,
+                        fill:false,
+                        borderColor: 'rgba(216, 167, 41, 0.9)',
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero:true
+                                beginAtZero:false
                             }
                         }]
                     }
