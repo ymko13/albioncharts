@@ -4,10 +4,10 @@ const mysql = require('mysql');
 var mysqlcache = new cache.Cache();
 
 var con = mysql.createConnection({
-    host: "35.195.4.36",
-    user: "root",
-    password: "albiondev",
-    database: "albion_market"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DB
   });
   
 con.connect(function(err) {
