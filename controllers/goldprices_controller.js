@@ -1,5 +1,6 @@
 const express = require('express');
-const mysql = require('./mysql/mysql.js');
+const mysql = require('./mysql/mysqlcached.js');
+const mysqlschema = require('./mysql/mysqlschema.js');
 const mySqlDates = require('./mysql/mysqldates.js');
 const queryBuilder = require('./mysql/querybuilder.js');
 
@@ -14,35 +15,36 @@ module.exports = router;
 
 function GET_GoldPrices(req, res)
 {     
-    mysql.query("SELECT Id, Value FROM gold_prices", function (err, result, fields) 
-    {
-        if (err) throw err;
-        res.json(result);
-    }); 
+    var query = "SELECT Id, Value FROM " + mysqlschema.GoldOrders;
+    mysql.readFrom(query, function(data){
+        res.json(data);
+    }, 30000);
 }
 
 function GET_GoldPricesSorted(req, res)
-{    
+{
+    var query = "SELECT Id, Value FROM " + mysqlschema.GoldOrders;
+
     var period = parseFloat(req.params.timeperiod);
-    if(period) queryGoldPricesBasedOnPeriod(res, period);
-    else res.end();
+    
+    if(period)
+    {
+        var whereDate = mySqlDates.currentDateMinusDaysToMySqlDate(period); 
+        query = query + " WHERE Id > '" + whereDate + "'";
+
+        mysql.readFrom(query, function(data){
+            res.json(data);
+        }, 30000);
+    }
+    else 
+    {
+        mysql.readFrom(query, function(data){
+            res.json(data);
+        }, 30000);
+    }
 }
 
 //End Controller
-
-//Region Functions
-
-function queryGoldPricesBasedOnPeriod(res, period)
-{
-    var whereDate = mySqlDates.currentDateMinusDaysToMySqlDate(period); 
-    mysql.query("SELECT Id, Value FROM gold_prices WHERE Id > '" + whereDate + "'", function (err, result, fields) 
-    {
-        if (err) throw err;
-        res.json(result);
-    }); 
-}
-
-//End Functions
 
 
 

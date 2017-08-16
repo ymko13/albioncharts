@@ -1,5 +1,6 @@
 const express = require('express');
-const mysql = require('./mysql/mysql.js');
+const mysql = require('./mysql/mysqlcached.js');
+const mysqlschema = require('./mysql/mysqlschema.js');
 const mySqlDates = require('./mysql/mysqldates.js');
 const queryBuilder = require('./mysql/querybuilder.js');
 
@@ -14,46 +15,42 @@ module.exports = router;
 
 function GET_MarketOrders(req, res) 
 {
-    var query = "SELECT * FROM auction_line";
+    var query = "SELECT * FROM " + mysqlschema.MarketAuctions;
 
-    var date = mySqlDates.currentDateMinusDaysToMySqlDate(req.query.dateoffset);
+    var date = req.query.dateoffset ? mySqlDates.currentDateMinusDaysToMySqlDate(req.query.dateoffset) : null;
 
     var acceptedProperties = [
         ["ItemTypeId",          req.query.itemtype,     true],
-        ["LocationId",          req.query.location,     false],
-        ["EnchantmentLevel",    req.query.enchantment,  false],
-        ["QualityLevel",        req.query.quality,      false],
-        ["DateTime",            date,                   true]
+        ["LocationId",          req.query.location],
+        ["EnchantmentLevel",    req.query.enchantment],
+        ["QualityLevel",        req.query.quality],
+        ["Time",            date,                   true, true]
     ];
 
     query = query + queryBuilder.buildWhere(acceptedProperties);
 
-    mysql.query(query, function (err, result, fields) 
-    {
-        if (err) throw err;
-        res.json(result);
-    }); 
+    mysql.readFrom(query, function(data){
+        res.json(data);
+    }, 30000);
 }
 
 function GET_MarketOrdersBaseOnItemTypeAndLocation(req, res) 
 {   
-    var query = "SELECT * FROM auction_line";
+    var query = "SELECT * FROM " + mysqlschema.MarketAuctions;
 
     var date = mySqlDates.currentDateMinusDaysToMySqlDate(req.params.dateoffset);
 
     var acceptedProperties = [
         ["ItemTypeId",  req.params.type,        true],
-        ["LocationId",  req.params.location,    false],
-        ["DateTime",    date,                   true]
+        ["LocationId",  req.params.location],
+        ["Time",    date,                   true, true]
     ];
 
     query = query + queryBuilder.buildWhere(acceptedProperties);
 
-    mysql.query(query, function (err, result, fields) 
-    {
-        if (err) throw err;
-        res.json(result);
-    });
+    mysql.readFrom(query, function(data){
+        res.json(data);
+    }, 30000);
 }
 
 //End Controller

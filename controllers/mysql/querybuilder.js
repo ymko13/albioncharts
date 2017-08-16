@@ -1,7 +1,11 @@
-function whereEqualsClause(name, value, quoted)
+function whereEqualsClause(name, value, quoted, date)
 {
     if(value)
     {
+        if(date)
+        {
+            return name + " > '" + value +"'";            
+        }
         if(quoted)
             return name + " = '" + value +"'";
         else
@@ -18,14 +22,23 @@ function buildWhere(data)
     var clauses = [];
     
     data.forEach(function(element) {
-        clauses.push(whereEqualsClause(element[0], element[1], element[2]));   
+        clauses.push(whereEqualsClause(element[0], element[1], element[2], element[3]));   
     }, this);
+
+    var added = false;
 
     for (var i = 0; i < clauses.length; i++) {
         if(!clauses[i]) continue;
 
-        if(i == 0) query = query + " WHERE ";
-        else if(i != clauses.length - 1) query = query + " AND ";
+        if(!added)
+        {
+            added = true;
+            query = query + " WHERE ";
+        } 
+        else
+        {
+            query = query + " AND ";
+        } 
     
         query += clauses[i];
     }
