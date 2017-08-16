@@ -1,20 +1,18 @@
 const path = require('path');
+const express = require('express');
 
-function Init(app)
-{
-    app.get('/', function(req, res) {
-        res.sendFile(path.join(__dirname + '/index.html'));
-    });
+var router = express.Router();
 
-    app.get('/gold/', function(req, res) {
-        res.sendFile(path.join(__dirname + '/goldgraph/gold.html'));
-    });
+router.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
 
-    app.get('/market/', function(req, res) {
-        res.sendFile(path.join(__dirname + '/marketgraphs/pricegraph.html'));
-    });
-}
+router.get('/gold/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/goldgraph/gold.html'));
+});
 
-module.exports = {
-    Init:Init
- };
+router.get('/market/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/marketgraphs/pricegraph.html'));
+});
+
+module.exports = router;

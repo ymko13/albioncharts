@@ -31,9 +31,18 @@ function zeroDateToMySqlDate(timestamp)
     return unixToMySqlDate(timestamp);
 }
 
+function currentDateMinusDaysToMySqlDate(days)
+{
+    var currentDate = new Date();
+    var newdate = currentDate - 1000 * 60 * 60 * 24 * days;   // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+    newdate = new Date(newdate);
+    return dateToMySqlDate(newdate);
+}
+
 module.exports = {
     unixToMySqlDate:unixToMySqlDate,
     zeroDateToMySqlDate:zeroDateToMySqlDate,
     dateToMySqlDate:dateToMySqlDate,
-    currentMySqlDate:currentMySqlDate
+    currentMySqlDate:currentMySqlDate,
+    currentDateMinusDaysToMySqlDate:currentDateMinusDaysToMySqlDate
  };
