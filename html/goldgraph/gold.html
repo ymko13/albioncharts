@@ -1,61 +1,91 @@
 <html>
     <head>
+        <style>
+            /* Dropdown Button */
+            .dropbtn {
+                background-color: #4CAF50;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* Dropdown button on hover & focus */
+            .dropbtn:hover, .dropbtn:focus {
+                background-color: #3e8e41;
+            }
+
+            /* The container <div> - needed to position the dropdown content */
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Dropdown Content (Hidden by Default) */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {background-color: #f1f1f1}
+
+            /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+            .show {display:block;}
+        </style>
         <script src="../static/scripts/Chart.bundle.js"></script>
         <script src="../static/scripts/jquery.js"></script>
+        <script src="../static/almarkets/gold.js"></script>
     </head>
     <body>
+        <button onclick="dropDown()" class="dropbtn">Dropdown</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" onclick="makeChart('goldChart', 1)">1</a>
+            <a href="#" onclick="makeChart('goldChart', 2)">2</a>
+            <a href="#" onclick="makeChart('goldChart', 3)">3</a>
+            <a href="#" onclick="makeChart('goldChart', 4);">4</a>
+            <a href="#" onclick="makeChart('goldChart', 5)">5</a>
+            <a href="#" onclick="makeChart('goldChart', 6)">6</a>
+            <a href="#" onclick="makeChart('goldChart', 7)">7</a>
+            </div>
+        </div>
         <section width="200" height="200">
-            <canvas id="chart1"></canvas>
+            <canvas id="goldChart"></canvas>
         </section>
         <script>
-            $.get("../api/goldprices/", function(data, status){
-                var labels = [];
-                var values =  [];
 
-                data.forEach(function(element) {
-                    labels.push(formatDate(element.Id));
-                    values.push(element.Value / 10000);
-                }, this);
-
-                var ctx = document.getElementById("chart1");
-
-                createChart(ctx, labels, values);
-            });
-            
-            function formatDate(date)
-            {
-                var formattedDate = date.replace("Z","").split('T');
-                return formattedDate[0] + " " + formattedDate[1].replace(":00.000", "");
+            function dropDown() {
+                document.getElementById("myDropdown").classList.toggle("show");
             }
 
-            function createChart(ctx, labels, values)
-            {
-                var myLineChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Gold Price',
-                        data: values,
-                        lineTension: 0.1,
-                        fill:false,
-                        borderColor: 'rgba(216, 167, 41, 0.9)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:false
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
                             }
-                        }]
                     }
                 }
-            });
             }
 
-
+            makeChart('goldChart', 1);
         </script>
     </body>
 </html>
