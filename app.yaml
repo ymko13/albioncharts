@@ -14,4 +14,8 @@
 # [START runtime]
 runtime: custom
 env: flex
+threadsafe: true
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 3
 # [END runtime]
